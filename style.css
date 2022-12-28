@@ -24,14 +24,14 @@ body {
 .player-container {
   display: flex;
   justify-content: space-around;
-  gap: 3vh;
+  gap: 1.5rem;
 }
 
 .button-container {
   margin-top: 0.5rem;
   display: flex;
   justify-content: center;
-  gap: 3vh;
+  gap: 1.5rem;
 }
 
 .player,
@@ -43,7 +43,10 @@ body {
   align-items: center;
   width: 7.5rem;
   height: 2.5rem;
-  background-color: rgba(240, 248, 255, 0.333);
+  background: linear-gradient(
+    rgba(240, 248, 255, 0.333),
+    rgba(240, 246, 255, 0.37)
+  );
   box-shadow: 2px 2px 1.5px rgba(0, 0, 0, 0.441);
   border-radius: 15px;
   margin-top: 1vh;
@@ -65,7 +68,7 @@ body {
 }
 
 .player-active {
-  background-color: rgba(255, 163, 4, 0.729);
+  background-color: rgba(211, 135, 5, 0.975);
   transition: all 0.75s;
 }
 
@@ -78,14 +81,14 @@ body {
 
 .container {
   display: flex;
-  margin: 2.5vh;
-  padding: 5vh;
+  margin: 2rem, 1rem;
+  padding: 3vh;
   gap: 2rem;
-  width: 80vw;
+  width: 90vw;
   height: auto;
   background-color: rgba(240, 248, 255, 0.333);
   box-shadow: 2px 2px 1.5px rgba(0, 0, 0, 0.441);
-  border-radius: 4rem;
+  border-radius: 2rem;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
@@ -94,8 +97,8 @@ body {
 .memorycard {
   position: relative;
   background-color: transparent;
-  height: 8vw;
-  width: 8vw;
+  height: 6vw;
+  width: 6vw;
   perspective: 800px;
   cursor: grab;
   /* border: 1px solid black; */
