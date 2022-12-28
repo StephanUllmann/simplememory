@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="shortcut icon" href="./lib/cardfront.png" type="image/x-icon" />
+    <title>Memory</title>
+  </head>
+  <body>
+    <div class="overlay"></div>
+    <div class="fileinput">
+      <p class="instruction">Wähle eigene Bilder aus.</p>
+      <input type="file" id="input" multiple />
+    </div>
+    <div class="top-container">
+      <div class="player-container">
+        <div class="player player-active" id="player0">
+          <p class="player-name" id="name0">Player 1</p>
+          <p class="counter"><span id="score0">0</span> Punkte</p>
+        </div>
+      </div>
+      <div class="button-container">
+        <div class="button" id="continue">Weiter</div>
+        <div class="button" id="shuffle">Neu mischen</div>
+      </div>
+    </div>
+    <div class="container" id="container">
+      <div class="memorycard" id="memocard-origin">
+        <div class="memorycard-inner">
+          <div class="memorycard-front">
+            <img class="frontpic" src="./lib/cardfront.png" alt="cardfront1" />
+          </div>
+          <div class="memorycard-back">
+            <img
+              class="memopic"
+              id="pic1"
+              src="./pics/footer.png"
+              alt="memocard1"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
