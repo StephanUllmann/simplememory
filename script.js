@@ -60,7 +60,7 @@ const resetPlayers = function () {
 };
 
 const displayCards = function (array) {
-  array.forEach(function (filename, ind) {
+  array.forEach(function (file, ind) {
     const html = `
     <div class="memorycard" id="memocard-${ind}">
     <div class="memorycard-inner">
@@ -73,7 +73,7 @@ const displayCards = function (array) {
         <img
           class="memopic"
           id="pic${ind + 1}"
-          src="./pics/${filename}"
+          src="${file}"
           alt="memocard${ind + 1}back"
         />
       </div>
@@ -84,7 +84,7 @@ const displayCards = function (array) {
   memoCard = document.querySelectorAll(".memorycard");
 
   for (let i = 0; i < array.length; i++) {
-    document.getElementById(`pic${i + 1}`).src = `./pics/${array[i]}`;
+    document.getElementById(`pic${i + 1}`).src = `${array[i]}`;
     // Building Pairs Object
     for (let [pairInd, pairName] of array.entries()) {
       if (i !== pairInd && array[i] === pairName) pairsIndexes[i] = pairInd;
@@ -116,8 +116,8 @@ const handleFiles = function () {
   inputEl.classList.toggle("hidden");
   //   Save file names in set
   const fileList = this.files;
-  for (const file of fileList) fileSet.add(file.name);
-  // fillArray();
+  console.log(fileList);
+  for (const file of fileList) fileSet.add(URL.createObjectURL(file));
   fileArray = [...fileSet, ...fileSet];
   randomizeArr(fileArray);
 };
