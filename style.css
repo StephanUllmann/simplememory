@@ -80,11 +80,14 @@ body {
 }
 
 .container {
-  display: flex;
+  /* display: flex; */
+  display: grid;
+  /* grid-template-columns: repeat(3, 1fr); */
   margin: 2rem, 1rem;
   padding: 3vh;
   gap: 2rem;
-  width: 90vw;
+  /* width: 90vw; */
+  max-width: 64em;
   height: auto;
   background-color: rgba(240, 248, 255, 0.333);
   box-shadow: 2px 2px 1.5px rgba(0, 0, 0, 0.441);
