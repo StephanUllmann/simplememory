@@ -87,7 +87,7 @@ body {
   padding: 3vh;
   gap: 2rem;
   /* width: 90vw; */
-  max-width: 64em;
+  max-width: 72em;
   height: auto;
   background-color: rgba(240, 248, 255, 0.333);
   box-shadow: 2px 2px 1.5px rgba(0, 0, 0, 0.441);
