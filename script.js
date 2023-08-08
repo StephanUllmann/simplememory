@@ -46,13 +46,15 @@ const resetPlayers = function () {
     players.forEach(function (player, index) {
       if (index > 0) player.classList.remove("player-active");
       document.getElementById(`score${index}`).textContent =
-        playersScore[`${index}`];
+        playersScore[index];
       document.getElementById(`name${index}`).textContent = prompt(
         `Spieler ${index + 1} - Wie heißt du?`
       );
     });
 
-    clickCard();
+    addCardClickListener();
+    clickCount = 0;
+    cardsClicked = [];
   } else {
     alert("1-6 Spieler möglich");
     resetPlayers();
@@ -60,6 +62,10 @@ const resetPlayers = function () {
 };
 
 const displayCards = function (array) {
+  containerEL.style.cssText = `grid-template-columns:repeat(${
+    Math.ceil(array.length ** 0.5) + Math.floor(array.length / 10)
+  } , 1fr);`;
+  // console.log(containerEL.style.gridTemplateColumns);
   array.forEach(function (file, ind) {
     const html = `
     <div class="memorycard" id="memocard-${ind}">
@@ -178,15 +184,17 @@ const flipCard = function (cardID) {
   }
 };
 
-const clickCard = function () {
-  containerEL.addEventListener("click", function (e) {
-    if (cardsClicked.length === 2) {
-      continueGame();
-    } else if (e.target.classList.contains("frontpic")) {
-      clickCount++;
-      flipCard(Number(e.target.getAttribute("id")));
-    }
-  });
+const handleCardClick = function (e) {
+  if (cardsClicked.length === 2) {
+    continueGame();
+  } else if (e.target.classList.contains("frontpic")) {
+    clickCount++;
+    flipCard(Number(e.target.getAttribute("id")));
+  }
+};
+
+const addCardClickListener = function () {
+  containerEL.addEventListener("click", handleCardClick);
 };
 
 // Shuffle same cards again
@@ -195,5 +203,6 @@ shuffleEl.addEventListener("click", function () {
   cardsClicked = [];
   clickCount = 0;
   containerEL.innerHTML = "";
-  randomizeArr();
+  containerEL.removeEventListener("click", handleCardClick);
+  randomizeArr(fileArray);
 });
