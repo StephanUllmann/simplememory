@@ -1,5 +1,6 @@
 "use strict";
 
+// Global Variables
 const fileSet = new Set();
 let fileArray = [];
 let randomizedArr = [];
@@ -8,7 +9,7 @@ const pairsIndexes = {};
 let clickCount = 0;
 let cardsClicked = [];
 
-// Fetch Elements from DOM
+// Fetch Elements
 const inputElement = document.getElementById("input");
 const overlay = document.querySelector(".overlay");
 const inputEl = document.querySelector(".fileinput");
@@ -42,7 +43,6 @@ const resetPlayers = function () {
     players = document.querySelectorAll(".player");
     let player0 = document.getElementById("player0");
     player0.classList.add("player-active");
-    console.log(player0);
     players.forEach(function (player, index) {
       if (index > 0) player.classList.remove("player-active");
       document.getElementById(`score${index}`).textContent =
@@ -59,24 +59,21 @@ const resetPlayers = function () {
   }
 };
 
-const displayCards = function () {
-  let plainFileNames = randomizedArr.map((filename) => filename.slice(0, -1));
-  console.log(plainFileNames);
-
-  plainFileNames.forEach(function (filename, ind) {
+const displayCards = function (array) {
+  array.forEach(function (file, ind) {
     const html = `
     <div class="memorycard" id="memocard-${ind}">
     <div class="memorycard-inner">
       <div class="memorycard-front">
         <img class="frontpic" src="./lib/cardfront.png" alt="cardfront${
           ind + 1
-        }front" />
+        }front" id="${ind}"/>
       </div>
       <div class="memorycard-back">
         <img
           class="memopic"
           id="pic${ind + 1}"
-          src="./pics/${filename}"
+          src="${file}"
           alt="memocard${ind + 1}back"
         />
       </div>
@@ -85,28 +82,24 @@ const displayCards = function () {
     containerEL.insertAdjacentHTML("beforeend", html);
   });
   memoCard = document.querySelectorAll(".memorycard");
-  console.log(memoCard);
 
-  for (let i = 0; i < plainFileNames.length; i++) {
-    document.getElementById(`pic${i + 1}`).src = `./pics/${plainFileNames[i]}`;
+  for (let i = 0; i < array.length; i++) {
+    document.getElementById(`pic${i + 1}`).src = `${array[i]}`;
     // Building Pairs Object
-    for (let [pairInd, pairName] of plainFileNames.entries()) {
-      if (i !== pairInd && plainFileNames[i] === pairName)
-        pairsIndexes[i] = pairInd;
+    for (let [pairInd, pairName] of array.entries()) {
+      if (i !== pairInd && array[i] === pairName) pairsIndexes[i] = pairInd;
     }
   }
-  console.log(pairsIndexes);
   resetPlayers();
 };
 
-const randomizeArr = function () {
-  randomizedArr = [...fileArray];
+const randomizeArr = function (array) {
+  randomizedArr = [...array];
   for (let i = randomizedArr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [randomizedArr[i], randomizedArr[j]] = [randomizedArr[j], randomizedArr[i]];
   }
-  console.log(randomizedArr);
-  displayCards();
+  displayCards(randomizedArr);
 };
 
 const fillArray = function () {
@@ -123,18 +116,15 @@ const handleFiles = function () {
   inputEl.classList.toggle("hidden");
   //   Save file names in set
   const fileList = this.files;
-  for (const file of fileList) fileSet.add(file.name);
-  fillArray();
+  console.log(fileList);
+  for (const file of fileList) fileSet.add(URL.createObjectURL(file));
+  fileArray = [...fileSet, ...fileSet];
+  randomizeArr(fileArray);
 };
 
 inputElement.addEventListener("change", handleFiles, false);
 
 // Initial State finished
-// let playersArr = [0, 1];
-// let activePlayer = 0;
-// let playing = false;
-// let clickCount = 0;
-// let cardsClicked = [];
 
 //// Game Logic
 
@@ -150,7 +140,7 @@ const changePlayer = function () {
 };
 
 const continueGame = function () {
-  if (clickCount === 2) {
+  if (clickCount >= 2) {
     if (pairsIndexes[cardsClicked[0]] === cardsClicked[1]) {
       memoCard[cardsClicked[0]].classList.add("invisible");
       memoCard[cardsClicked[1]].classList.add("invisible");
@@ -166,7 +156,6 @@ const continueGame = function () {
   }
 };
 
-// document.querySelector(".container").addEventListener("click", continueGame);
 continueEl.addEventListener("click", continueGame);
 document.addEventListener("keydown", function (event) {
   if (event.code === "Space") continueGame();
@@ -181,23 +170,23 @@ const checkCards = function () {
 };
 
 // Flipping Cards on click
-const flipCard = function (i) {
-  if (!cardsClicked.includes(i) && clickCount < 2) {
-    clickCount++;
-    memoCard[i].classList.toggle("click");
-    // console.log(memoCard[1]);
-    cardsClicked.push(i);
-    console.log(cardsClicked);
+const flipCard = function (cardID) {
+  if (!cardsClicked.includes(cardID) && clickCount < 3) {
+    memoCard[cardID].classList.toggle("click");
+    cardsClicked.push(cardID);
     if (clickCount === 2) checkCards();
   }
 };
 
 const clickCard = function () {
-  for (let i = 0; i < memoCard.length; i++) {
-    memoCard[i].addEventListener("click", function () {
-      flipCard(i);
-    });
-  }
+  containerEL.addEventListener("click", function (e) {
+    if (cardsClicked.length === 2) {
+      continueGame();
+    } else if (e.target.classList.contains("frontpic")) {
+      clickCount++;
+      flipCard(Number(e.target.getAttribute("id")));
+    }
+  });
 };
 
 // Shuffle same cards again
